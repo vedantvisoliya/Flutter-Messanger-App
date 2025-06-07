@@ -36,11 +36,11 @@ class HomePage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        // shape: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(16.0),
-        // ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         onPressed: () {},
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
         child: Icon(
           Icons.add,
           color: Theme.of(context).colorScheme.tertiary,
