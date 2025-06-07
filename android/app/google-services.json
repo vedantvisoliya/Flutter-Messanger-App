@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "158849590094",
+    "project_id": "messanger-app-caf37",
+    "storage_bucket": "messanger-app-caf37.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158849590094:android:aaa2cb244b98779021b41f",
+        "android_client_info": {
+          "package_name": "com.example.message_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNpO8MXGn74bzDjKyhtgqUp8Kz909XXWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
