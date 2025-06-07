@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:message_app/components/my_button.dart';
 import 'package:message_app/services/auth/auth_gate.dart';
+import 'package:message_app/services/auth/login_or_register_page.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({super.key});
