@@ -1,53 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:message_app/services/auth/auth_services.dart';
+import 'package:message_app/components/my_nav_bar.dart';
+import 'package:message_app/pages/messanger_page.dart';
+import 'package:message_app/pages/profile_page.dart';
+import 'package:message_app/pages/settings_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  void signOut(BuildContext context) async {
-    final AuthServices authServices = AuthServices();
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-    try{
-      await authServices.signOut();
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-      authServices.errorDialog(context, e.toString());
-    }
+class _HomePageState extends State<HomePage> {
+  int _selectedPageIndex = 1;
+
+  void onTabChange(int index) {
+    setState(() {
+      _selectedPageIndex = index;      
+    });
   }
+
+  final List<Widget> _pages = [
+    // setting page
+    SettingsPage(),
+
+    // message page,
+    MessangerPage(),
+
+    // Profile Page
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "Messanger",
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => signOut(context), 
-            icon: Icon(Icons.logout),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-        ),
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.tertiary,
-        ),
-      ),
-      // bottomNavigationBar: ,
-      // body: ,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      bottomNavigationBar: MyNavBar(onTabChange: onTabChange),
+      body: _pages[_selectedPageIndex],
     );
   }
 }
