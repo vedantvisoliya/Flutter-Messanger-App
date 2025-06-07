@@ -35,6 +35,17 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        // shape: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(16.0),
+        // ),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        onPressed: () {},
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.tertiary,
+        ),
+      ),
       // bottomNavigationBar: ,
       // body: ,
     );
