@@ -27,6 +27,7 @@ class SignupPage extends StatelessWidget {
         final newCredential = await authServices.signUpWithEmailAndPassword(
           _emailAddress.text, 
           _password.text,
+          _name.text,
         );
       } catch (e) {
         // ignore: use_build_context_synchronously
@@ -161,7 +162,11 @@ class SignupPage extends StatelessWidget {
 
                 // sign up button
                 MyButton(
-                  onTap: () => signUp(context), 
+                  onTap: () {
+                    if (_name.text.isNotEmpty) {
+                      signUp(context);
+                    }
+                  }, 
                   text: "Sign up"
                 ),
               ],

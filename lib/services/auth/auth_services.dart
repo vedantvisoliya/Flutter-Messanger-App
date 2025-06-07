@@ -1,4 +1,4 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class AuthServices {
   // instance of firbaseauth and firestore
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _verificationId = '';
 
   // error dialog 
@@ -33,6 +33,31 @@ class AuthServices {
     );
   }
 
+  // get current user name method
+  Future<String> getCurrentUserName() async {
+    try {
+      final uid = _firebaseAuth.currentUser?.uid;
+
+      if (uid == null) {
+        throw Exception("User not logged in");
+      }
+
+      final userDoc = await _firestore
+          .collection('Users')
+          .doc(uid)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        return data?['name']; // returns the userDBId
+      } else {
+        throw Exception("User document not found");
+      }
+    } catch (e) {
+      throw Exception("Error retrieving name: $e");
+    }
+  }
+
   // get current user method
   User? getCurrentUser() {
     return _firebaseAuth.currentUser;
@@ -46,7 +71,6 @@ class AuthServices {
         email: emailAddress, 
         password: password,
       );
-
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
@@ -67,6 +91,17 @@ class AuthServices {
       idToken: gAuth.idToken,
     );
 
+
+    // save user if it doesn't already exists
+    _firestore.collection("Users").doc(gUser.id).set(
+      {
+        'uid': gUser.id,
+        'email': gUser.email,
+        'name': gUser.displayName,
+        'userDbId': "${gUser.displayName}${gUser.id}",
+      }
+    );
+
     // finally lets sign in
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
@@ -84,11 +119,21 @@ class AuthServices {
 
   // SIGN UP METHODS
   // 1. sign up with email and passwords
-  Future<UserCredential> signUpWithEmailAndPassword(String emailAddress, String password) async {
+  Future<UserCredential> signUpWithEmailAndPassword(String emailAddress, String password, String name) async {
     try{
       UserCredential newCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: emailAddress, 
         password: password,
+      );
+
+      // save user in separate doc
+      _firestore.collection("Users").doc(newCredential.user!.uid).set(
+        {
+          'uid': newCredential.user!.uid,
+          'email': emailAddress,
+          'name': name,
+          'userDbId': "$name${newCredential.user!.uid}"
+        }
       );
 
       return newCredential;
@@ -154,5 +199,20 @@ class AuthServices {
   // SIGN OUT METHOD
   Future<void> signOut() async {
     return await _firebaseAuth.signOut();
+  }
+
+  // get user db id
+  Future<String> getUserDBId(String uid) async {
+      final userDoc = await _firestore
+          .collection('Users')
+          .doc(uid)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        return data?['userDbId']; // returns the userDBId
+      } else {
+        throw Exception("User document not found");
+      }
   }
 }
