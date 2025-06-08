@@ -72,9 +72,11 @@ A modern messenger app built using **Flutter** and **Firebase**, supporting both
     ```
 
 3. **Configure Firebase**
+    ```
     Add google-services.json for Android and firebase_options.dart for Web (via flutterfire configure).
     Make sure Firebase Authentication and Firestore are enabled in the Firebase Console.
     Also SHA1 and SHA256
+    ```
 
 4. **Locally Run App**
     ```bash
