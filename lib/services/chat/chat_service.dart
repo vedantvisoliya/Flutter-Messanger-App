@@ -46,31 +46,25 @@ class ChatService {
     ids.sort();
     String chatRoomId = ids.join('_');
 
-    // add a new message to the database
     await _firestore
-        .collection("users_data")
-        .doc(userDbId)
-        .collection("chat_room_id")
-        .doc(chatRoomId)
-        .collection("messages")
-        .add(newMessage.toMap());
+      .collection("chat_rooms")
+      .doc(chatRoomId)
+      .collection("messages")
+      .add(newMessage.toMap());
   }
 
   // recieve message
-  Future<Stream<QuerySnapshot>> getMessage(String userId, String otherUserId) async {
-    String userDbId =  await _authServices.getUserDBId(userId);
+  Stream<QuerySnapshot> getMessage(String userId, String otherUserId) {
     List<String> ids = [userId, otherUserId];
     ids.sort();
     String chatRoomId = ids.join('_');
 
     return _firestore
-        .collection("users_data")
-        .doc(userDbId)
-        .collection("chat_room_id")
-        .doc(chatRoomId)
-        .collection("messages")
-        .orderBy("timestamp", descending: false)
-        .snapshots();
+      .collection("chat_rooms")
+      .doc(chatRoomId)
+      .collection("messages")
+      .orderBy("timestamp", descending: false)
+      .snapshots();
   }
 
   // add user to people firestore by using email
@@ -112,6 +106,20 @@ class ChatService {
         'email': userToAdd['email'],
         'uid': userToAdd['uid'],
         'userDbId': userToAdd['userDbId'],
+      });
+  }
+
+  // get user stream
+  Stream<List<Map<String, dynamic>>> getUserStream() async* {
+  final String userDbId = await fetchUserDbId();
+
+  yield* _firestore
+      .collection("users_data")
+      .doc(userDbId)
+      .collection("people")
+      .snapshots()
+      .map((snapshot) {
+        return snapshot.docs.map((doc) => doc.data()).toList();
       });
   }
 }

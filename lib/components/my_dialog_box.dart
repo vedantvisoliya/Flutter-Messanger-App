@@ -23,7 +23,7 @@ class MyDialogBox extends StatelessWidget {
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
       // ignore: use_build_context_synchronously
-      _authService.errorDialog(context, e.toString());
+      _authService.errorDialog(context, "User-Not-Found");
     }
   }
 

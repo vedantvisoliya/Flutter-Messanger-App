@@ -78,14 +78,14 @@ class SettingsPage extends StatelessWidget {
                     "Logout",
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w500,
-                      color: Colors.blue,
+                      color: Colors.red,
                     ),
                   ),
                   IconButton(
                     onPressed: () => signOut(context), 
                     icon: Icon(
                       Icons.logout,
-                      color: Colors.blue,
+                      color: Colors.red,
                     ),
                   ),
                 ],
