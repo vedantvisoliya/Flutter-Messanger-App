@@ -29,7 +29,6 @@ class ChatService {
     // get current users info
     final String currentUserId = _firebaseAuth.currentUser!.uid;
     final Timestamp timestamp = Timestamp.now();
-    String userDbId = await _authServices.getUserDBId(currentUserId);
     String name = await fetchUsersCurrentName();
 
     // create a message
