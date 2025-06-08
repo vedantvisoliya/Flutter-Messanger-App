@@ -63,7 +63,7 @@ A modern messenger app built using **Flutter** and **Firebase**, supporting both
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/vedantvisoliya/Flutter-Messenger_App.git
+   git clone https://github.com/vedantvisoliya/Flutter-Messenger-App.git
    cd messenger_app
    ```
 2. **Install Dependencies**
